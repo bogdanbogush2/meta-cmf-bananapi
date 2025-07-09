@@ -11,6 +11,22 @@ IMAGE_INSTALL_append = " rdk-speedtest-cli"
 #Enable required linux utils for Fwupgrade
 IMAGE_INSTALL_append = " gptfdisk e2fsprogs-mke2fs"
 
+IMAGE_INSTALL_append += " \
+            gdb \
+           ccsp-one-wifi-dbg \
+           rdk-wifi-hal-dbg \
+           rdk-wifi-libhostap-dbg \
+           ccsp-one-wifi-libwebconfig-dbg \
+"
+
+ROOTFS_POSTPROCESS_COMMAND_append = " protobuf_debug_lib_cleanup;"
+
+protobuf_debug_lib_cleanup() {
+    rm -f ${R}/usr/lib/.debug/libprotobuf*
+    rm -f ${R}/usr/lib/.debug/libprotoc*
+    rm -f ${R}/usr/bin/.debug/[a-z]*
+}
+
 ROOTFS_POSTPROCESS_COMMAND_append = "add_busybox_fixes; "
 
 #Emptying the PRSERV_HOST since builds are local
